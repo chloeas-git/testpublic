@@ -1,0 +1,40 @@
+class DecisionTreeNode:
+    def __init__(self, question, left_node, right_node):
+        self.question = question
+        self.left_node = left_node
+        self.right_node = right_node
+
+    def ask_question(self):
+        print(self.question)
+        answer = input().lower()
+        if answer == 'coffee':
+            self.left_node.ask_question()
+        elif answer == 'tea':
+            self.right_node.ask_question()
+
+class LeafNode:
+    def __init__(self, message):
+        self.message = message
+
+    def ask_question(self):
+        print(self.message)
+
+# Define the decision tree
+two_sugars_node = LeafNode("Enjoy your coffee with 2 sugars!")
+one_sugar_node = LeafNode("Enjoy your coffee with 1 sugar!")
+black_coffee_node = LeafNode("Enjoy your black coffee!")
+milk_node = LeafNode("Do you want milk?")
+sugar_node = LeafNode("Do you want sugar?")
+coffee_or_tea_node = DecisionTreeNode("Do you want coffee or tea?", black_coffee_node, milk_node)
+milk_node_parent = DecisionTreeNode("How do you like your tea?", black_coffee_node, milk_node)
+sugar_node_parent = DecisionTreeNode("How many sugars do you want?", one_sugar_node, two_sugars_node)
+tea_node_parent = DecisionTreeNode("Do you want milk?", black_coffee_node, sugar_node_parent)
+coffee_or_tea_node.left_node = coffee_or_tea_node
+coffee_or_tea_node.right_node = tea_node_parent
+milk_node_parent.left_node = black_coffee_node
+milk_node_parent.right_node = milk_node
+sugar_node_parent.left_node = one_sugar_node
+sugar_node_parent.right_node = two_sugars_node
+
+# Start the decision tree
+coffee_or_tea_node.ask_question()
